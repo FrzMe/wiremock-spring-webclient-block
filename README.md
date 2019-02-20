@@ -8,9 +8,10 @@ I'm not entirely certain whether this is a WireMock or a Spring WebClient issue,
 
 The failing test setup can be found here: https://github.com/FrzMe/wiremock-spring-webclient-block/blob/master/src/test/java/webclientblock/WebClientBlockTest.java#L49
 
-Reasons why it could be a spring issue:
+Reasons why it could be a spring WebClient issue:
 
 * when requesting "String" via the WebClient the issue does not occur (-> it occurs only when json decoding) (see https://github.com/FrzMe/wiremock-spring-webclient-block/blob/master/src/test/java/webclientblock/WebClientBlockTest.java#L102)
+* when using the RestTemplate instead of the WebClient the issue does not occur (see https://github.com/FrzMe/wiremock-spring-webclient-block/blob/master/src/test/java/webclientblock/WebClientBlockTest.java#L80 )
 
 Reasons why it could be a WireMock issue:
 
