@@ -1,4 +1,4 @@
-# WireMock
+# Sprin WebClient / WireMock block/freeze
 
 Using WireMock 2.21 (2.18-2.21 seem to be affected) when repeatedely sending http requests which request and decode JSON using the spring WebClient to WireMock the requests sometimes freezes and fail to reply. 
 The issue does not occur when using Wiremock 2.17 and it does not occur when requesting Strings (and not decoding JSON).
