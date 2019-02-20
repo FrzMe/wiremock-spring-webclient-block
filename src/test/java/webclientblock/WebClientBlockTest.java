@@ -31,7 +31,7 @@ public class WebClientBlockTest {
     @LocalServerPort
     private int port;
 
-    private int loops = 20_000;
+    private int loops = 25_000;
 
     @Test
     @Ignore("this works fine")
@@ -49,6 +49,7 @@ public class WebClientBlockTest {
     public void testWiremockServiceGetJsonDecode() throws Exception {
         WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(8080));
         wireMockServer.start();
+        long failures = 0;
         try {
             WireMock.reset();
 
@@ -61,16 +62,18 @@ public class WebClientBlockTest {
                 Mono<Map> answer = client.get().uri("http://localhost:" + 8080 + "/hello").retrieve()
                         .bodyToMono(Map.class);
 
-                assertEquals(0, answer.block(Duration.of(1, ChronoUnit.SECONDS)).size());
+                try {
+                    answer.block(Duration.of(1, ChronoUnit.SECONDS));
+                } catch (RuntimeException re) {
+                    System.out.println(
+                            "encountered a failure at loop count " + i + " " + re.getClass() + " " + re.getMessage());
+                    failures++;
+                }
             }
         } finally {
             wireMockServer.stop();
         }
-    }
-
-    @Test
-    public void testWiremockServiceGetJsonDecode2() throws Exception {
-        testWiremockServiceGetJsonDecode();
+        assertEquals(0, failures);
     }
 
     @Test
